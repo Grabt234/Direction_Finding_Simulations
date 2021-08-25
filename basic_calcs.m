@@ -4,7 +4,7 @@ close all
 %angles of arrival (rads)
 %can be denotes as alpha in notes
 theta = -80:1:80;
-theta_deg = theta
+theta_deg = theta;
 theta = theta*(pi/180);
 
 %frequency and wave lengths
@@ -51,7 +51,7 @@ plot(theta_deg, theta_by_phi*180/pi);
 legend('6GHz','12GHz','18GHz')
 xlabel("Angle of Arrival (Deg)")
 ylabel("Relative Phase Accuracy (Deg)")
-title(["PLOT SHOWING RELATIVE PAHSE ACCURACY BETWEEN TWO WAVES FOR A BASELINE"; ...
+title(["PLOT SHOWING ANGULAR ACCURACY BETWEEN TWO WAVES FOR A BASELINE"; ...
     " LENGTH OF 2.5CM OVER 3 FREQUENCIES OVER AN ANGLE OF ARRIVAL ANGLES OF [-90:90]"])
 
 %% SINGLE FREQUENCY, MULTIPLE BASELINES, PLOTTING AMBIGUITIES
@@ -72,7 +72,15 @@ title(["PLOT SHOWING RELATIVE PHASE AMBIGUITIES FOR CONSTANT FREQUENCY"; ...
 
 %% SINGLE FREQUENCY, MULTIPLE BASELINES, PLOTTING ACCURACY
 
+%calculating accuracy
+theta_by_phi_2 = ((lambda./baselines).')./(2*pi*cos(theta));
 
+plot(theta_deg, theta_by_phi_2*180/pi);
+legend('L = 2.5cm','L = 1.25m','L = 0.83cm')
+xlabel("Angle of Arrival (Deg)")
+ylabel("Relative Phase (Deg)")
+title(["PLOT SHOWING ANGULAR ACCURACY BETWEEN TWO WAVES FOR VARIABLE BASELINES"; ...
+    " AND CONSTANT FREQUENCY OVER AN ANGLE OF ARRIVAL ANGLES OF [-90:90]"])
 
 
 

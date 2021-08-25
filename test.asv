@@ -1,0 +1,9 @@
+%% DEFINING ANTENNA
+
+%operational frequency
+f = 16e8;
+c = 3e8;
+lambda = c/f;
+
+%define coeffecients wrt refernce antenna
+spacing_hor
