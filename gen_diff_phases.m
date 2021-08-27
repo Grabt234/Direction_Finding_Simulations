@@ -13,8 +13,12 @@ function differential_phases = gen_diff_phases(element_positions,frequency, aoa)
     
     lambda = 3e8/frequency;
     
-    %See any text on basic angle of arrival for description of fomrula
-    differential_phases = 2*pi/(lambda) * (element_positions)* sin(aoa); 
+    %See any text on basic angle of arrival for description of formula
+    %0 is reference so differential is just phase at element itself
+    differential_phases = ((2*pi)/(lambda))*(element_positions)*sin(aoa); 
+    
+    %moving back into range [-180:180]
+    differential_phases = wrapToPi(differential_phases);
     
 end
 

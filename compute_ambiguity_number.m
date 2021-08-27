@@ -12,7 +12,7 @@ function M = compute_ambiguity_number(baseline, frequency)
     %number of ambiguities in phase
     M = 2*baseline/lambda;
     %Weiss-Weinstein lower bound estimate (?)
-    M = floor(M);
+    M = ceil(M);
     
 end
 
