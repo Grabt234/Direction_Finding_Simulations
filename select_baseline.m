@@ -16,7 +16,7 @@ function baseline = select_baseline(element_positions,frequency)
     for i = 2:numel(element_positions)
         
         %check if base line requirement is met
-        if element_positions(i) >= max_baseline
+        if  max_baseline >= element_positions(i) 
             
             baseline = element_positions(i);
             break
