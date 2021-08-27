@@ -1,4 +1,4 @@
-function baseline = select_baseline(element_positions,frequency)
+function [baseline, baseline_index] = select_baseline(element_positions,frequency)
     
     %---------------------------------------------------------------------
     %select_baseline: given a operation frequency one, the course baseline
@@ -19,6 +19,8 @@ function baseline = select_baseline(element_positions,frequency)
         if  max_baseline >= element_positions(i) 
             
             baseline = element_positions(i);
+            baseline_index = i;
+            
             break
             
         end

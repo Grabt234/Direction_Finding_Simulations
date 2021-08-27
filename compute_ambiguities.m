@@ -21,7 +21,8 @@ function ambiguous_phis = compute_ambiguities(M, differential_phase)
     end
     
     %shifting back into correct range - see ED support notes
-    ambiguous_phis = ambiguous_phis - (M/2)*phase_step;
+    %floor included by inspection
+    ambiguous_phis = ambiguous_phis - floor((M/2))*phase_step;
     
 end
 
