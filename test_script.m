@@ -10,13 +10,10 @@ pos_elements = [0 0.0083 0.0125 0.025]; %meters
 
 [fine_baseline, fine_baseline_index] = max(pos_elements);
 
-%ambiguity number
-M = compute_ambiguity_number(fine_baseline,foi);
-
 %% SIMULATING PHASE RECEIVAL
 
 
-aoa = (-5)*(pi/180);
+aoa = (40)*(pi/180);
 %aoa = pi/16;   
 
 %simulating receival
@@ -35,8 +32,20 @@ fine_diff_phase = differential_phases(fine_baseline_index);
 unambiguous_aoa = compute_aoa(course_baseline, foi, course_diff_phase)
 
 %using fine baseline to find AMBIGUOUS aoa
-fine_aoa = compute_aoa(fine_baseline, foi, fine_diff_phase)
-% 
-ambiguous_phases_oi = compute_ambiguities(M, fine_aoa);
-fine_aoa_ambiguous = compute_aoa(fine_baseline, foi, phase_oi);
+ambiguous_aoa = compute_aoa(fine_baseline, foi, fine_diff_phase)
+
+%ambiguity number
+M = compute_ambiguity_number(fine_baseline,foi);
+
+%finding the other possible angles
+ambiguous_phases_oi = compute_ambiguities(M, fine_aoa)
+
+
+
+
+
+
+
+
+
 
