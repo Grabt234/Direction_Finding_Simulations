@@ -1,4 +1,4 @@
-function differential_phases = gen_diff_phases(element_positions,frequency, aoa)
+function differential_phases = gen_diff_phases_aoa(element_positions,frequency, aoa)
     
     %---------------------------------------------------------------------
     %gen_diff_phase: given a set of linearly spaced positions, the
@@ -18,8 +18,9 @@ function differential_phases = gen_diff_phases(element_positions,frequency, aoa)
     differential_phases = ((2*pi)/(lambda))*(element_positions)*sin(aoa); 
     
     %moving back into range [-180:180]
-    differential_phases = wrapToPi(differential_phases)
+    differential_phases = wrapToPi(differential_phases);
     
+    %normalising phases
     differential_phases = differential_phases/(2*pi);
     
 end
