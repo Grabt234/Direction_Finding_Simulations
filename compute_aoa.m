@@ -8,10 +8,10 @@ function aoa = compute_aoa(baseline, frequency, diff_phase)
     %diff_phase   - differential phase between elements
     %---------------------------------------------------------------------
     
-    lambda = 3e8/frequency;
-  
+    lambda = 3e8/frequency;    
+    
     %aoa is commonly denoted as theta
-    aoa = asin(diff_phase*lambda/(2*pi*baseline));
+    aoa = asin(diff_phase*lambda/(baseline));
     
 end
 

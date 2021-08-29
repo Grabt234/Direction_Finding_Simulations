@@ -3,7 +3,7 @@ close all
 
 %angles of arrival (rads)
 %can be denotes as alpha in notes
-theta = -80:1:80;
+theta = -89:1:89;
 theta_deg = theta;
 theta = theta*(pi/180);
 
@@ -56,15 +56,16 @@ used_lambda = 3;
 
 %% SINGLE FREQUENCY, MULTIPLE BASELINES, PLOTTING AMBIGUITIES
 
-lambda = lambdas(used_lambda);
+lambda = 3e8/18e9; %0.0167
 
 %realtive phase constant f, variable L
-phi_2 = ((((2*pi)./lambda())*baselines).').*sin(theta);
+phi_2 = ((((2*pi)./lambda)*[0.5*0.0167 2*0.0167]).').*sin(theta);
 phi_2 = wrapToPi(phi_2);
+theta = -90:1:90;
 
 figure
 plot(theta_deg, phi_2*180/pi);
-legend('L = 2.5cm','L = 1.25m','L = 0.83cm')
+legend('L = 2.5cm','L = 0.83cm')
 xlabel("Angle of Arrival (Deg)")
 ylabel("Relative Phase Accuracy (Deg)")
 title(["PLOT SHOWING RELATIVE PHASE AMBIGUITIES FOR CONSTANT FREQUENCY"; ...

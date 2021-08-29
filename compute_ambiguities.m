@@ -1,4 +1,4 @@
-function ambiguous_aoa = compute_ambiguities(M, aoa)
+function fine_diff_phases = compute_ambiguities(N, phase_diff)
     
     %---------------------------------------------------------------------
     %compute_ambiguities: computes the possible ambiguities for a give
@@ -8,21 +8,26 @@ function ambiguous_aoa = compute_ambiguities(M, aoa)
     %aoa - calculated angle of arrival
     %---------------------------------------------------------------------
     
+    
     %ambigous phase step
-    phase_step = pi/(M+1);
+    %phase_step = pi/(N);
     
     %preallocating memory
-    ambiguous_aoa = zeros(1,M+1);
+    fine_diff_phases = zeros(1,ceil(N));
     
-    for i = 1:M+1
-       
-        ambiguous_aoa(1,i) =  aoa + (i-1)*phase_step;
+    range = -floor(N):1:floor(N);
+    
+    for i = 1:numel(range)
+        
+        range(i)
+        
+        fine_diff_phases(1,i) =  phase_diff + range(i);
         
     end
     
     %shifting back into correct range - see ED support notes
-    %floor included by inspection
-    %ambiguous_phis = (ambiguous_phis) - (M/2)*phase_step;
+    %fine_diff_phases = wrapTo2Pi(fine_diff_phases);
+
     
 end
 

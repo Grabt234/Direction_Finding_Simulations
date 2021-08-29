@@ -1,4 +1,4 @@
-function M = compute_ambiguity_number(baseline, frequency)
+function N = compute_ambiguity(baseline, frequency)
     
     %---------------------------------------------------------------------
     %compute_ambiguity_number: computes number of uncertainties for a given
@@ -9,10 +9,9 @@ function M = compute_ambiguity_number(baseline, frequency)
     %---------------------------------------------------------------------
     
     lambda = 3e8/frequency;
-    %number of ambiguities in phase
-    M = 2*baseline/lambda;
-    %Weiss-Weinstein lower bound estimate (?)
-    M = ceil(M);
     
+    %number of ambiguities in phase
+    N = floor(baseline/lambda);
+       
 end
 
