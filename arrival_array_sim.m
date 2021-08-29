@@ -25,16 +25,7 @@ spacing_y = [0 1 1.5 3] ;
 
 %% GENERATING WAVEFORM
 
-%as a factor of operational frequency
-samp_rate = 10;
-samples = 10e3;
 
-f_use = f_if;
-lambda_use = c/f_use;
-
-t = (1:1:samples)*(1/(samp_rate*f_use));
-
-basic_pulse = sin(2*pi*f_use*t);
 
 %% SIMULATING RECEIVAL
 
