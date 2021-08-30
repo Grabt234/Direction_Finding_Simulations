@@ -23,7 +23,7 @@ function [element_phases, element_cmplx_voltages, frequency_indicies] = ...
     element_cmplx_voltages = SIGS(:,frequency_indicies);
    
     %comuting the phase of these signals - NORMALISED
-    element_phases = angle(element_cmplx_voltages)/(2*pi)
+    element_phases = angle(element_cmplx_voltages)/(2*pi);
 
 end
 
