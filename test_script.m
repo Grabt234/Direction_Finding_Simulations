@@ -27,7 +27,7 @@ fs = (bw*2)*1e6;
 %sampling preiod
 T = 1/fs;
 %samples
-n = 1:1:2000;
+n = 1:1:5000;
 
 %time
 t = n*T;
@@ -51,19 +51,21 @@ sigs = condition_signal(sig, pos_elements, frequency, true_aoa, snr);
 %
 SIGS = half_fft(sigs);
 
+%% FINDING WHERE SIGNAL IS PRESENT
+
+[element_phases, element_cmplx_voltages, frequency_indicies] = find_sigs(SIGS);
+
 %% EXTRACTING MAX VALUE IN ARRAY AND TAKING PHASES
 
-max_vals = max(SIGS,[],2);
-
-%normalised anlges
-max_vals_phase = angle(max_vals)/(2*pi);
+%for now sleecting first phase only
+max_vals_phase = element_phases(:,1).';
 
 %calculating differential - normalised
 diff_phases = (max_vals_phase - max_vals_phase(1));
 
 %% SELECTING PORTION OF ARRAY TO USE
 
-AOA = aoa(foi,pos_elements, diff_phases)
+AOA = aoa(foi,pos_elements, diff_phases);
 
 
 

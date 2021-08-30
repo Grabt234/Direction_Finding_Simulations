@@ -44,7 +44,12 @@ sig = sin((2*pi*(f_sig-f_mult))*t);
 
 t = (1:1:length(sigs))*T;
 
-condition_signal()
+sigs = condition_signal(sig, pos_elements, frequency, true_aoa, snr);
+
+
+%% TAKING FFT
+%
+SIGS = half_fft(sigs);
 
 %% EXTRACTING MAX VALUE IN ARRAY AND TAKING PHASES
 
