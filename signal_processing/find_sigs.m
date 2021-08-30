@@ -17,7 +17,7 @@ function [element_phases, element_cmplx_voltages, frequency_indicies] = ...
     ave = abs(mean(single_channel));
 
     %finding indexes of frequencies that have N*average signal power
-    frequency_indicies = find(abs(single_channel) > 300*ave);
+    frequency_indicies = find(abs(single_channel) > 350*ave);
     
     %finding the complex value of these signals
     element_cmplx_voltages = SIGS(:,frequency_indicies);
