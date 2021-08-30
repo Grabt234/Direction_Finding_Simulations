@@ -44,27 +44,7 @@ sig = sin((2*pi*(f_sig-f_mult))*t);
 
 t = (1:1:length(sigs))*T;
 
-sigs = condition_signal(sig, pos_elements, frequency, true_aoa, snr);
-
-
-%% PLOTTING WAVEFORM
-%
-SIGS = fft(sigs,[],2)./length(sigs);
-SIGS = SIGS(:,length(SIGS)/2:end);
-
-% plot(1:1:length(SIG),SIG)
-% f_res = fs/length(n);
-% f_axis = (1:1:length(SIGS))*f_res;
-% 
-% f_axis = f_axis + f_mult;
-% 
-% scaling = 1e9;
-% f_axis = f_axis/scaling;
-% 
-% plot(f_axis, abs(SIGS(1,:)))
-% xlabel("F (GHz)")
-
-% plot(f_axis, abs(SIGS))
+condition_signal()
 
 %% EXTRACTING MAX VALUE IN ARRAY AND TAKING PHASES
 
