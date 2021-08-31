@@ -10,7 +10,7 @@ frequency = 18e9;
 %linear array for x
 pos_elements = [0 0.0083 0.0125 0.025]; %meters
 
-simulations = 100;
+simulations = 1;
 
 %storing snr, error
 data = zeros(2,simulations);
@@ -29,11 +29,12 @@ for sim_number = 1:simulations
 
     %signal parameters
     n = 5000; %constant for now
-    f_samp = 50e6; %constant
-    f_sig = 10e6; %constant
+    f_samp = 10e6; %constant
+    f_sig = 1e6; %constant
 
-    signal = cw_gen(n,f_samp,f_sig);
+    %signal = cw_gen(n,f_samp,f_sig);
     %signal = pulse_gen(n,duty);
+    signal = fmcw_gen(n,f_samp,f_sig,f_sig/2, 1000);
 
     %used to determine a false alarm 
     I_known = find_true_index(signal);
@@ -67,7 +68,7 @@ for sim_number = 1:simulations
 
     %% CALCULATING RECIEVER DETERMINED AOA
 
-    calculated_AOA = aoa(foi,pos_elements, diff_phases);
+    calculated_AOA = aoa(frequency,pos_elements, diff_phases);
 
     %% CALCULATING ERROR
 
