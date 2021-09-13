@@ -7,7 +7,7 @@ true_AOA = (aoa_deg)*(pi/180);
 %frequency of interest
 frequency = 18e9;
 
-%linear array for x
+%linear array spacing
 pos_elements = [0 0.0083 0.0125 0.025]; %meters
 
 simulations = 1000;
@@ -21,7 +21,7 @@ duty = 0.1;
 
 %% MONTE-CARLO ! :) WHOHOO!
 
-for sim_number = 1:simulations
+for sim_number =\sub1:simulations
 
     snr = 20*rand(1);
 
@@ -53,14 +53,15 @@ for sim_number = 1:simulations
     [element_phases, element_cmplx_voltages, frequency_indicies] = find_sigs(SIGS);
 
     %% EXTRACTING MAX VALUE IN ARRAY AND TAKING PHASES
-     
+    
+    %returns 
     [false_alarms, indicies] = check_false_alarm(I_known, ...
                                         frequency_indicies);
     
     %adding number of false alarms to total_count
     false_alarm_count = false_alarm_count + false_alarms;
 
-    %sdelecting the phase with true reading
+    %selecting the phase with true reading
     max_vals_phase = element_phases(:,indicies(1)).';
 
     %calculating differential - normalised

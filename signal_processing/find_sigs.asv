@@ -6,8 +6,7 @@ function [element_phases, element_cmplx_voltages, frequency_indicies] = ...
     %              criteria - i.e where one thinks a signal is
     %---------------------------------------------------------------------
     %element_phases - single sided fft of signals
-    %element_cmplx_voltages - cmplx vlaues of sig
-    %frequency_indicies - index where sig present
+    %
     %---------------------------------------------------------------------
     
     %only looking at a single element as IT IS ASSUMED SIGNAL PRESENT ON
@@ -21,10 +20,10 @@ function [element_phases, element_cmplx_voltages, frequency_indicies] = ...
     %finding indexes of frequencies that have N*average signal power
     frequency_indicies = find(abs(single_channel) > 150*ave);
     
-    %finding the complex value of where signals present
+    %finding the complex value of these signals
     element_cmplx_voltages = SIGS(:,frequency_indicies);
    
-    %computing the phase of these signals - NORMALISED
+    %comuting the phase of these signals - NORMALISED
     element_phases = angle(element_cmplx_voltages)/(2*pi);
 
 end
