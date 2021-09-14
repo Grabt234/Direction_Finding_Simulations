@@ -1,4 +1,4 @@
-function [SIGS SIGS_shift] = half_fft(sigs)
+function [SIGS, SIGS_shift] = half_fft(sigs)
     
     %---------------------------------------------------------------------
     %half_fft: will return one side of the FFT'ed function. Gain of fft

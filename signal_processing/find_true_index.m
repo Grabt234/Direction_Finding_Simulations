@@ -9,7 +9,7 @@ function I = find_true_index(signal)
     signal = half_fft(signal);
 
     %finding index of where frequency is 
-    [~,I] = max(signal);
+    [~,I] = max(abs(signal));
 
 end
 

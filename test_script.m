@@ -41,7 +41,40 @@ for sim_number =1:simulations
  
     %used to determine a false alarm 
     I_known = find_true_index(signal);
-
+    
+    %% MULTI SIG CASE
+    
+    n = 16000;
+    
+    f_samp = 4e9;
+    
+    duty = 0.1;
+    
+    snr = 0
+    
+    signal_1 = pulse_gen(n,duty);
+    signal_2 = pulse_gen(n,duty);
+    
+    f1 = 400e6;
+    f2 = 1000e6;
+    
+    %shifting to desired frequency
+    signal_1 = signal_1.*sin(2*pi*f1*(1/f_samp)*(1:1:n));
+    signal_2 = signal_2.*sin(2*pi*f2*(1/f_samp)*(1:1:n));
+    
+    I_known_1 = find_true_index(signal_1);
+    I_known_2 = find_true_index(signal_2);
+    I_known = [I_known_1 I_known_2]
+    
+    signal_3 = signal_1 + signal_2;
+    
+    SIGNAL_3 = fftshift(fft(signal_3));
+    SIGNAL_3 = awgn(SIGNAL_3, snr, "measured");
+    
+    plot(1:1:length(SIGNAL_3),SIGNAL_3);
+    
+    
+    
     %% RECEIVING WAVEFORMS
 
     %conditioning signals with noise and phase 
@@ -56,7 +89,7 @@ for sim_number =1:simulations
 %     
     %% TAKING FFT
 
-    [SIGS SIGS_shift] = half_fft(signals);
+    [SIGS ~] = half_fft(signals);
     
     %% FINDING WHERE SIGNAL IS PRESENT
 
@@ -74,10 +107,10 @@ for sim_number =1:simulations
     false_alarm_count = false_alarm_count + false_alarms;
 
     %selecting row of phase values corresponsing to set of antenna elements
-    single_elements_phases = element_phases(:,true_indicies(1)).'
+    single_elements_phases = element_phases(:,true_indicies(1)).';
 
     %calculating differential wrt to first element - normalised
-    diff_phases = (single_elements_phases - single_elements_phases(1))
+    diff_phases = (single_elements_phases - single_elements_phases(1));
 
     %% CALCULATING RECIEVER DETERMINED AOA
     
@@ -86,8 +119,6 @@ for sim_number =1:simulations
 
     %% CALCULATING ERROR
     
-    true_AOA
-    calculated_AOA
     error = true_AOA - calculated_AOA;
 
     %% STORING STATE INFORMATION
@@ -96,9 +127,7 @@ for sim_number =1:simulations
     data(2,sim_number) = error;
     data(3,sim_number) = calculated_AOA;
     data(4,sim_number) = true_AOA;
-    
-    calculated_AOA;
-    true_AOA;
+
 
 end
 
