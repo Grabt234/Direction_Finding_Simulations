@@ -21,7 +21,7 @@ duty = 0.1;
 
 %% MONTE-CARLO ! :) WHOHOO!
 
-for sim_number =\sub1:simulations
+for sim_number =1:simulations
 
     snr = 20*rand(1);
 
@@ -33,7 +33,7 @@ for sim_number =\sub1:simulations
     f_sig = 1e6; %constant
 
     %signal = cw_gen(n,f_samp,f_sig);
-    signal = pulse_gen(n,duty);
+    %signal = pulse_gen(n,duty);
     %signal = chirp_gen(n,f_samp,f_sig,f_sig/2, 1000);
 
     %used to determine a false alarm 

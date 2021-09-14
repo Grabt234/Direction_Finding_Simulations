@@ -1,0 +1,36 @@
+%% PLOTTING CW SIGNAL
+
+samples = 1000;
+f_samp = 10e3; %10KHz
+f_sig = 100; %250Hz
+signal = cw_gen(samples,f_samp,f_sig);
+
+plot((1:1:samples)*(1/f_samp),signal)
+xlabel("Time(Seconds)")
+ylabel("Amplitude(Volts)")
+title("PLOT OF A 100HZ SINUSOID")
+
+%% PLOTTING UNMODULATED PULSE
+
+samples = 1000;
+duty = 0.1; %10%
+signal = pulse_gen(samples, duty);
+
+plot((1:1:samples)*(1/f_samp),signal)
+xlabel("Time(Seconds)")
+ylabel("Amplitude(Volts)")
+ylim([-0.1 1.1])
+title("PLOT OF A PULSE WITH A 10% DUTY CYCLE")
+
+%% PLOTTING LFM PULSE
+
+samples = 10000
+f_samp = 10e3; %10KHz
+
+signal = chirp_gen(n,f_samp,f_sig,f_sig/2, 1000);
+
+plot((1:1:samples)*(1/f_samp),signal)
+xlabel("Time(Seconds)")
+ylabel("Amplitude(Volts)")
+ylim([-0.1 1.1])
+title("PLOT OF A PULSE WITH A 10% DUTY CYCLE")
