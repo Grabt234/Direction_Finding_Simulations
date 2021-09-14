@@ -19,6 +19,8 @@ false_alarm_count = 0;
 
 duty = 0.1;
 
+%superhet shift
+f_LO = 6e9;
 
 %% MONTE-CARLO ! :) WOOHOO!
 
@@ -29,13 +31,13 @@ for sim_number =1:simulations
     %% GENERATING WAVEFORMS
 
     %signal parameters
-    n = 16000; %constant for now
+    n = 5000; %constant for now
     f_samp = 4e9; %constant
     f_sig = 1e6; %constant
 
     %signal = cw_gen(n,f_samp,f_sig);
-    %signal = pulse_gen(n,duty);
-    signal = chirp_gen(n,f_samp,500e6,250e6, 0.00001);
+    signal = pulse_gen(n,duty);
+    %signal = chirp_gen(n,f_samp,f_sig,f_sig/2, 1000);
  
     %used to determine a false alarm 
     I_known = find_true_index(signal);
@@ -48,7 +50,7 @@ for sim_number =1:simulations
     samples = n;
     %to see time domain plot
     SIGNAL = fftshift(fft(signal)./length(signal));
-    ax = (-(samples-1)/2:1:(samples-1)/2)*(f_samp/samples);
+    ax = (-(samples-1)/2:1:(samples-1)/2)*(f_samp/samples) + f_LO;
     plot(ax,abs(SIGNAL))
     figure
     
