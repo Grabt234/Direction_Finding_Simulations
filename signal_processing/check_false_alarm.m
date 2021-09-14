@@ -16,7 +16,7 @@ function [count, true_index_indicies] = check_false_alarm(I_known, I_found)
     for i = 1:size(distance)
         
         %not all frequencies are present, therefore dynamic size
-        %finding indicies of frequency
+        %finding indicies of frequency that have broken thresholds
         true_index_indicies = [ true_index_indicies ...
                                     find(distance(1,:) == 0)];
 

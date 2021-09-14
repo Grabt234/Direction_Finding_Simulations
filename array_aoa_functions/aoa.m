@@ -36,10 +36,13 @@ function unambiguous_fine_aoa = aoa(foi, pos_elements, differential_phases)
     fine_diff_phases = compute_ambiguities(N, fine_diff_phase);
      
     %% CALCULATING COURSE AOA'S
+    
     %using couse baseline to find unambiguous aoa
     unambiguous_aoa = compute_aoa(course_baseline, foi, course_diff_phase);
+    
     %using fine baseline to find AMBIGUOUS aoa
-    ambiguous_aoas = compute_aoa(fine_baseline, foi, fine_diff_phases);
+    ambiguous_aoas = compute_aoa(fine_baseline, foi, fine_diff_phases)
+    
     %% COMPUTING AMBIGUOUS 
     %selecting correct aoa
     unambiguous_fine_aoa = select_aoa(unambiguous_aoa, ambiguous_aoas);

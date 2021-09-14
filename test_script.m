@@ -7,17 +7,18 @@ true_AOA = (aoa_deg)*(pi/180);
 %frequency of interest
 frequency = 18e9;
 
+%this is defined by the max frequency present from demodulation
+max_frequency = 18e9;
+
 %linear array spacing
 pos_elements = [0 0.0083 0.0125 0.025]; %meters
 
-simulations = 1;
+simulations = 4000;
 
 %storing snr, error
 data = zeros(2,simulations);
 
 false_alarm_count = 0;
-
-duty = 0.1;
 
 
 %% MONTE-CARLO ! :) WOOHOO!
@@ -32,10 +33,11 @@ for sim_number =1:simulations
     n = 16000; %constant for now
     f_samp = 4e9; %constant
     f_sig = 1e6; %constant
-
+    duty = 0.1; %1 percent
+    
     %signal = cw_gen(n,f_samp,f_sig);
-    %signal = pulse_gen(n,duty);
-    signal = chirp_gen(n,f_samp,500e6,250e6, 0.00001);
+    signal = pulse_gen(n,duty);
+    %signal = chirp_gen(n,f_samp,500e6,250e6, 0.00001);
  
     %used to determine a false alarm 
     I_known = find_true_index(signal);
@@ -47,22 +49,23 @@ for sim_number =1:simulations
     
     samples = n;
     %to see time domain plot
-    SIGNAL = fftshift(fft(signal)./length(signal));
-    ax = (-(samples-1)/2:1:(samples-1)/2)*(f_samp/samples);
-    plot(ax,abs(SIGNAL))
-    figure
-    
+%     SIGNAL = fftshift(fft(signal)./length(signal));
+%     ax = (-(samples-1)/2:1:(samples-1)/2)*(f_samp/samples);
+%     plot(ax,abs(SIGNAL))
+%     figure
+%     
     %% TAKING FFT
 
-    SIGS = half_fft(signals);
+    [SIGS SIGS_shift] = half_fft(signals);
     
-
     %% FINDING WHERE SIGNAL IS PRESENT
 
     [element_phases, element_cmplx_voltages, frequency_indicies] = find_sigs(SIGS);
-
+    
+    frequency_indicies;
     %% EXTRACTING MAX VALUE IN ARRAY AND TAKING PHASES
     
+    %known issue with roll off causing multiple detection for a single peak
     %returns indicies of actual signals
     [false_alarms, true_indicies] = check_false_alarm(I_known, ...
                                         frequency_indicies);
@@ -71,17 +74,20 @@ for sim_number =1:simulations
     false_alarm_count = false_alarm_count + false_alarms;
 
     %selecting row of phase values corresponsing to set of antenna elements
-    single_elements_phases = element_phases(:,true_indicies(1)).';
+    single_elements_phases = element_phases(:,true_indicies(1)).'
 
     %calculating differential wrt to first element - normalised
-    diff_phases = (single_elements_phases - single_elements_phases(1));
+    diff_phases = (single_elements_phases - single_elements_phases(1))
 
     %% CALCULATING RECIEVER DETERMINED AOA
-
-    calculated_AOA = aoa(frequency,pos_elements, diff_phases);
+    
+    %max frequency is defined by the demodulation process
+    calculated_AOA = aoa(max_frequency,pos_elements, diff_phases);
 
     %% CALCULATING ERROR
-
+    
+    true_AOA
+    calculated_AOA
     error = true_AOA - calculated_AOA;
 
     %% STORING STATE INFORMATION
