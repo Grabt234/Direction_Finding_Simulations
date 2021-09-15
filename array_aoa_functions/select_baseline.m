@@ -15,7 +15,7 @@ function [baseline, baseline_index] = select_baseline(element_positions,frequenc
     %checks which elements meet base line requirements
     for i = 2:numel(element_positions)
         
-        %if element spacing is less than max allowable baseline
+        %check if base line requirement is met
         if  max_baseline >= element_positions(i) 
             
             baseline = element_positions(i);

@@ -5,10 +5,20 @@ aoa_deg = 30;
 %deg -> rad
 true_AOA = (aoa_deg)*(2pi/180);
 
+%frequency of interest
+frequency = 18e9;
+
+%this is defined by the max frequency present from demodulation
+max_frequency = 18e9;
+
 %linear array spacing
 pos_elements = [0 0.0083 0.0125 0.025]; %meters
 
+<<<<<<< HEAD
 simulations = 1;
+=======
+simulations = 2000;
+>>>>>>> parent of 752bd26 (automatic baseline selection)
 
 %storing snr, error
 data = zeros(2,simulations);
@@ -24,6 +34,26 @@ for sim_number =1:simulations
 
     %% GENERATING WAVEFORMS
 
+<<<<<<< HEAD
+=======
+     snr = 20*rand(1);
+
+    %signal parameters
+    n = 16000; %constant for now
+    f_samp = 4e9; %constant
+    f_sig = 1e6; %constant
+    duty = 0.01; %1 percent
+    
+    %signal = cw_gen(n,f_samp,f_sig);
+    signal = pulse_gen(n,duty);
+    %signal = chirp_gen(n,f_samp,500e6,250e6, 0.00001);
+ 
+%     %used to determine a false alarm 
+%     I_known = find_true_index(signal);
+    
+    %% MULTI SIG CASE
+    
+>>>>>>> parent of 752bd26 (automatic baseline selection)
 %     snr = 20*rand(1);
 % 
 %     %signal parameters
@@ -100,12 +130,17 @@ for sim_number =1:simulations
     [SIGS, ~] = half_fft(signals);
     
     %a lovely plot of a one sided frequency domain
+<<<<<<< HEAD
 %     plot(1:1:length(SIGS),SIGS)
+=======
+%     plot(1:1:length(SIGS),abs(SIGS))
+%    
+>>>>>>> parent of 752bd26 (automatic baseline selection)
 %     figure
     
     %% FINDING WHERE SIGNAL IS PRESENT
 
-    [element_phases, element_cmplx_voltages, frequency_indicies] = find_sigs(SIGS,threshold_factor);
+    [element_phases, element_cmplx_voltages, frequency_indicies] = find_sigs(SIGS);
     
     %% TAKING MIDPOINT OF CONTINUOUS THRESHOLDS
     
@@ -185,11 +220,9 @@ for sim_number =1:simulations
 
     %% CALCULATING RECIEVER DETERMINED AOA
     
-    foi = frequencies(1);
-    
     %max frequency is defined by the demodulation process
-    calculated_AOA = aoa(foi,pos_elements, diff_phases);
-   
+    calculated_AOA = aoa(max_frequency,pos_elements, diff_phases)
+    true_AOA
 
     %% CALCULATING ERROR
 

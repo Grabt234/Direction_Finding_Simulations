@@ -12,7 +12,7 @@ function [SIGS, SIGS_shift] = half_fft(sigs)
     SIGS = (fft(sigs,[],2)./length(sigs));
     SIGS_shift = fftshift((fft(sigs,[],2)./length(sigs)));
     
-    SIGS = SIGS(:,(length(SIGS)/2):end);
+    SIGS = SIGS(:,length(SIGS)/2:end);
     
 end
 
