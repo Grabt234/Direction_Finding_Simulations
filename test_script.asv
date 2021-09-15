@@ -35,7 +35,7 @@ for sim_number =1:simulations
     n = 16000; %constant for now
     f_samp = 4e9; %constant
     f_sig = 1e6; %constant
-    duty = 0.01; %1 percent
+    duty = 0.1; %1 percent
     
     %signal = cw_gen(n,f_samp,f_sig);
     signal = pulse_gen(n,duty);
@@ -209,9 +209,9 @@ RMSE = sqrt(mean((data(2,:)).^2))
 
 
 %plotting results
-scatter(data(1,:),data(2,:))
+scatter(data(1,:),)
 xlabel("SNR(dB)")
 ylabel("Error (deg)")
-
+bar()
 % 
 % 
