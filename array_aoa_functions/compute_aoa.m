@@ -11,6 +11,7 @@ function aoa = compute_aoa(baseline, frequency, diff_phase)
     lambda = 3e8/frequency;    
     
     %aoa is commonly denoted as theta
+    
     aoa = asin(diff_phase*lambda/(baseline));
     
 end

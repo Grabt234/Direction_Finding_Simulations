@@ -1,5 +1,5 @@
 function [element_phases, element_cmplx_voltages, frequency_indicies] = ...
-                                                            find_sigs(SIGS)
+                                                            find_sigs(SIGS,threshold_factor)
     
     %---------------------------------------------------------------------
     %find_sigs: will find array values and positions that meet magnitude
@@ -18,7 +18,7 @@ function [element_phases, element_cmplx_voltages, frequency_indicies] = ...
     ave = mean(abs(single_channel));
     
     %finding indexes of frequencies that have N*average signal power
-    frequency_indicies = find(abs(single_channel) > 10*ave);
+    frequency_indicies = find(abs(single_channel) > threshold_factor*ave);
     
     %finding the complex value of where signals present
     element_cmplx_voltages = SIGS(:,frequency_indicies);

@@ -18,7 +18,7 @@ function signal = cw_gen(samples,f_samp, f_sig)
     t = n*(1/f_samp);
     
     %creating signal
-    signal = sin(2*pi*f_sig*t);
+    signal = cos(2*pi*f_sig*t);
 
 end
 
