@@ -65,7 +65,7 @@ theta = -90:1:90;
 
 figure
 plot(theta_deg, phi_2*180/pi);
-legend('L = 2.5cm','L = 0.83cm')
+legend('L = 0.83cm', 'L = 2.5cm')
 xlabel("Angle of Arrival (Deg)")
 ylabel("Element Phase (Deg)")
 title(["PLOT SHOWING PHASE AMBIGUITIES FOR A FREQUENCY OF 18GHZ"; ...

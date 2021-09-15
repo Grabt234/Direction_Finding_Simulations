@@ -1,13 +1,14 @@
 
 %% SIMULATION PARAMTERS
 
-aoa_deg = -30;
-true_AOA = (aoa_deg)*(pi/180);
+aoa_deg = 30;
+%deg -> rad
+true_AOA = (aoa_deg)*(2pi/180);
 
 %linear array spacing
 pos_elements = [0 0.0083 0.0125 0.025]; %meters
 
-simulations = 1000;
+simulations = 1;
 
 %storing snr, error
 data = zeros(2,simulations);
@@ -23,63 +24,69 @@ for sim_number =1:simulations
 
     %% GENERATING WAVEFORMS
 
-    snr = 20*rand(1);
-
-    %signal parameters
-    n = 16000; %constant for now
-    f_samp = 4e9; %constant
-    f_sig = 0.5e9; %constant
-    f_lo = 5.5e9;
-    duty = 0.01; %1 percent
-    threshold_factor = 5;
-    
-    signal = cw_gen(n,f_samp,f_sig);
-    %signal = pulse_gen(n,duty);
-    signal = chirp_gen(n,f_samp,500e6,250e6, 0.00001);
- 
-%     %used to determine a false alarm 
-%     I_known = find_true_index(signal);
+%     snr = 20*rand(1);
+% 
+%     %signal parameters
+%     n = 16000; %constant for now
+%     f_samp = 4e9; %constant
+%     f_sig = 0.5e9; %constant
+%     duty = 0.01; %1 percent
+%     threshold_factor = 5;
+%     
+%     f_lo = 5.5e9;
+%     f1 = 500e6;
+%     rf_frequency = f1 + f_lo;
+%     
+%     %signal = cw_gen(n,f_samp,f_sig);
+%     signal = pulse_gen(n,duty).*cos(2*pi*f1*(1/f_samp)*(1:1:n));
+%     %signal = chirp_gen(n,f_samp,500e6,250e6, 0.00001);
+%  
+% %     %used to determine a false alarm 
+% %     I_known = find_true_index(signal);
     
     %% MULTI SIG CASE
     
-%     snr = 20*rand(1);
-%     
-%     n = 16000;
-%     
-%     f_samp = 4e9;
-%     
-%     duty = 0.1;
-%     
-%     f_lo = 6.25e9;
-%     
-%     signal_1 = pulse_gen(n,duty);
-%     signal_2 = pulse_gen(n,duty);
-%     
-%     f1 = 150e6;
-%     f2 = 750e6;
-%     
-%     %shifting to desired frequency
-%     signal_1 = signal_1.*sin(2*pi*f1*(1/f_samp)*(1:1:n));
-%     signal_2 = signal_2.*sin(2*pi*f2*(1/f_samp)*(1:1:n));
-%     
-%     I_known_1 = find_true_index(signal_1);
-%     I_known_2 = find_true_index(signal_2);
-%     I_known = [I_known_1 I_known_2];
-%     
-%     signal_3 = signal_1 + signal_2;
-%     
-%     SIGNAL_3 = fftshift(fft(signal_3));
-%     %SIGNAL_3 = awgn(SIGNAL_3, , "measured");
-%     
-%     
-%     signal = signal_3;
+    snr = 20*rand(1);
+    
+    n = 16000;
+    
+    f_samp = 4e9;
+    
+    duty = 0.5;
+    
+    f_lo = 17e9;
+    
+    
+    
+    signal_1 = pulse_gen(n,duty);
+    signal_2 = pulse_gen(n,duty);
+    
+    f1 = 500e6;
+    f2 = 800e6;
+    rf_frequency = f1 + f_lo;
+    
+    %shifting to desired frequency
+    signal_1 = signal_1.*cos(2*pi*f1*(1/f_samp)*(1:1:n));
+    signal_2 = signal_2.*cos(2*pi*f2*(1/f_samp)*(1:1:n));
+    
+    I_known_1 = find_true_index(signal_1);
+    I_known_2 = find_true_index(signal_2);
+    I_known = [I_known_1 I_known_2];
+    
+    signal_3 = signal_1 + signal_2;
+    
+    SIGNAL_3 = fftshift(fft(signal_3));
+    %SIGNAL_3 = awgn(SIGNAL_3, , "measured");
+    
+    
+    signal = signal_3;
     
     
     
     %% RECEIVING WAVEFORMS
     
     %conditioning signals with noise and phase 
-    signals = condition_signal(signal, pos_elements, frequency, true_AOA, snr);
+    signals = condition_signal(signal, pos_elements, rf_frequency, true_AOA, snr);
     
     samples = n;
     %to see time domain plot
@@ -93,6 +100,8 @@ for sim_number =1:simulations
     [SIGS, ~] = half_fft(signals);
     
     %a lovely plot of a one sided frequency domain
+%     plot(1:1:length(SIGS),SIGS)
+%     figure
     
     %% FINDING WHERE SIGNAL IS PRESENT
 
@@ -183,8 +192,9 @@ for sim_number =1:simulations
    
 
     %% CALCULATING ERROR
-    
-    error = true_AOA - calculated_AOA;
+
+    %true AOA is degrees
+    error = true_AOA - calculated_AOA
 
     %% STORING STATE INFORMATION
 
@@ -200,7 +210,7 @@ end
 data(2,:) =  (data(2,:)*2*pi)* 180/(2*pi);
 
 
-RMSE = sqrt(mean((data(2,:)).^2));
+RMSE = sqrt(mean((data(2,:)).^2))
 
 
 %plotting results

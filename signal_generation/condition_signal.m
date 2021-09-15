@@ -9,7 +9,7 @@ function signals = condition_signal(sig, array_positions, ...
     %sig - a 1xn length signal
     %array_positions - array positions in meters with index 1 
     %                           as reference 0 array [0 d1 d2]
-    %frequency - the frequency of the signal  
+    %frequency - RF the frequency of the signal  
     %true_aoa - the anlge of arrival of the signal
     %snr - the signal to noise ratio of the signal at recieval
     %---------------------------------------------------------------------
@@ -22,6 +22,7 @@ function signals = condition_signal(sig, array_positions, ...
                                             true_aoa);
     
     %simulating phase difference at each recieving element
+    %note: differential phases normalised to pi
     sigs = sigs.*exp(1i*2*pi*differential_phases.');
     
     %adding noise to the signal
