@@ -105,7 +105,7 @@ for sim_number =1:simulations
 
     [element_phases, element_cmplx_voltages, frequency_indicies] = find_sigs(SIGS);
     
-
+    frequency_indicies
     %% TAKING MIDPOINT OF CONTINUOUS THRESHOLDS
     
     %1 means two indicies are continuous [1,2,3,4]
@@ -120,24 +120,31 @@ for sim_number =1:simulations
     removed_count = 0;
     index_of_frequency = zeros(0,0);
     
-    
+    continuous_indicies
     %cutting into arrs of continuous indicies
     for i = 1:numel(continuous_indicies)
-
+    
+        disp("-----")
+        frequency_indicies
         continuous_indicies(i)
-
+        removed_count
+        continuous_indicies(i)-1-removed_count
+        frequency_indicies(1,1:continuous_indicies(i)-1-removed_count)
+        disp("-----")
         %cutting continuous set of signal indicies out
         continuous_sig_indicies = frequency_indicies(1, ...
                                    1:continuous_indicies(i)-1-removed_count);
  
+        removed_elements = length(continuous_sig_indicies);
+        
         index_of_frequency = [index_of_frequency ...
                                     continuous_sig_indicies(:,ceil( end/2))];
         
         %counting how many indicies were removed
-        removed_count = removed_count + length(continuous_indicies(i));
+        removed_count = removed_count + removed_elements ;
         
         %removing counted set of indicies
-        frequency_indicies = frequency_indicies(1, continuous_indicies(i)+1:end);
+        frequency_indicies = frequency_indicies(1, removed_elements +1:end);
         
       
     end
