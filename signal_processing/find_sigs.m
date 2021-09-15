@@ -15,10 +15,10 @@ function [element_phases, element_cmplx_voltages, frequency_indicies] = ...
     single_channel = SIGS(1,:);
 
     %taking average of channel to determine signal threshold
-    ave = abs(mean(single_channel));
+    ave = mean(abs(single_channel));
     
     %finding indexes of frequencies that have N*average signal power
-    frequency_indicies = find(abs(single_channel) > 50*ave);
+    frequency_indicies = find(abs(single_channel) > 10*ave);
     
     %finding the complex value of where signals present
     element_cmplx_voltages = SIGS(:,frequency_indicies);
