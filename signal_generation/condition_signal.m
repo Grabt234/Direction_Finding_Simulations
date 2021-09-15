@@ -26,6 +26,6 @@ function signals = condition_signal(sig, array_positions, ...
     
     %adding noise to the signal
     signals = awgn(sigs, snr, "measured");
-    
+
 end
 
