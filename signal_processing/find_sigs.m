@@ -1,13 +1,12 @@
 function [element_phases, element_cmplx_voltages, frequency_indicies] = ...
-                                                            find_sigs(SIGS)
+                                                  find_sigs(SIGS,threshold_factor)
     
     %---------------------------------------------------------------------
-    %find_sigs: will find array values and positions that meet magnitude
-    %              criteria - i.e where one thinks a signal is
+    %find_sigs - finds a signal present in fft
     %---------------------------------------------------------------------
-    %element_phases - single sided fft of signals
-    %element_cmplx_voltages - cmplx vlaues of sig
-    %frequency_indicies - index where sig present
+    %SIGS single sided FFT of signal
+    %threshold_factor - how many times greater response need to be with
+    %                   respect to average to be conisidered a signal
     %---------------------------------------------------------------------
     
     %only looking at a single element as IT IS ASSUMED SIGNAL PRESENT ON
@@ -18,7 +17,7 @@ function [element_phases, element_cmplx_voltages, frequency_indicies] = ...
     ave = mean(abs(single_channel));
     
     %finding indexes of frequencies that have N*average signal power
-    frequency_indicies = find(abs(single_channel) > 10*ave);
+    frequency_indicies = find(abs(single_channel) > threshold_factor*ave);
     
     %finding the complex value of where signals present
     element_cmplx_voltages = SIGS(:,frequency_indicies);

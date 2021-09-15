@@ -4,16 +4,10 @@
 aoa_deg = -30;
 true_AOA = (aoa_deg)*(pi/180);
 
-%frequency of interest
-frequency = 18e9;
-
-%this is defined by the max frequency present from demodulation
-max_frequency = 18e9;
-
 %linear array spacing
 pos_elements = [0 0.0083 0.0125 0.025]; %meters
 
-simulations = 2000;
+simulations = 1000;
 
 %storing snr, error
 data = zeros(2,simulations);
@@ -29,17 +23,19 @@ for sim_number =1:simulations
 
     %% GENERATING WAVEFORMS
 
-     snr = 20*rand(1);
+    snr = 20*rand(1);
 
     %signal parameters
     n = 16000; %constant for now
     f_samp = 4e9; %constant
-    f_sig = 1e6; %constant
+    f_sig = 0.5e9; %constant
+    f_lo = 5.5e9;
     duty = 0.01; %1 percent
+    threshold_factor = 5;
     
-    %signal = cw_gen(n,f_samp,f_sig);
-    signal = pulse_gen(n,duty);
-    %signal = chirp_gen(n,f_samp,500e6,250e6, 0.00001);
+    signal = cw_gen(n,f_samp,f_sig);
+    %signal = pulse_gen(n,duty);
+    signal = chirp_gen(n,f_samp,500e6,250e6, 0.00001);
  
 %     %used to determine a false alarm 
 %     I_known = find_true_index(signal);
@@ -97,13 +93,10 @@ for sim_number =1:simulations
     [SIGS, ~] = half_fft(signals);
     
     %a lovely plot of a one sided frequency domain
-%     plot(1:1:length(SIGS),abs(SIGS))
-%    
-%     figure
     
     %% FINDING WHERE SIGNAL IS PRESENT
 
-    [element_phases, element_cmplx_voltages, frequency_indicies] = find_sigs(SIGS);
+    [element_phases, element_cmplx_voltages, frequency_indicies] = find_sigs(SIGS,threshold_factor);
     
     %% TAKING MIDPOINT OF CONTINUOUS THRESHOLDS
     
@@ -183,9 +176,11 @@ for sim_number =1:simulations
 
     %% CALCULATING RECIEVER DETERMINED AOA
     
+    foi = frequencies(1);
+    
     %max frequency is defined by the demodulation process
-    calculated_AOA = aoa(max_frequency,pos_elements, diff_phases)
-    true_AOA
+    calculated_AOA = aoa(foi,pos_elements, diff_phases);
+   
 
     %% CALCULATING ERROR
     
@@ -205,7 +200,7 @@ end
 data(2,:) =  (data(2,:)*2*pi)* 180/(2*pi);
 
 
-RMSE = sqrt(mean((data(2,:)).^2))
+RMSE = sqrt(mean((data(2,:)).^2));
 
 
 %plotting results
