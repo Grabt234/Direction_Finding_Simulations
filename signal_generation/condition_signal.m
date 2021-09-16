@@ -13,7 +13,7 @@ function signals = condition_signal(sig, array_positions, ...
     %true_aoa - the anlge of arrival of the signal
     %snr - the signal to noise ratio of the signal at recieval
     %---------------------------------------------------------------------
-    
+
     %upscaling to each represent signal at each element of array
     sigs = repmat(sig, length(array_positions), 1);
 

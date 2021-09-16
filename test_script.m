@@ -28,17 +28,17 @@ for sim_number =1:simulations
     n = 16000; %constant for now
     f_samp = 4e9; %constant
     f_sig = 0.5e9; %constant
-    f_lo = 5.5e9;
-    f_rf = f_sig+f_lo
-    duty = 0.01; %1 percent
+    f_lo = 15.5e9;
+    f_rf = f_sig+f_lo;
+    duty = 0.1; %1 percent
     threshold_factor = 5;
     
     %signal = cw_gen(n,f_samp,f_sig);
     signal = pulse_gen(n,duty).*cos((1:1:n)*2*pi*f_sig*(1/f_samp));
     %signal = chirp_gen(n,f_samp,500e6,250e6, 0.00001);
  
-%     %used to determine a false alarm 
-%     I_known = find_true_index(signal);
+    %used to determine a false alarm 
+    I_known = find_true_index(signal);
     
     %% MULTI SIG CASE
     
@@ -98,6 +98,9 @@ for sim_number =1:simulations
 
     [element_phases, element_cmplx_voltages, frequency_indicies] = find_sigs(SIGS,threshold_factor);
     
+    %created to keep track of original index-frequency relationship
+    orig_freq_indicies = frequency_indicies;
+    
     %% TAKING MIDPOINT OF CONTINUOUS THRESHOLDS
     
     %1 means two indicies are continuous [1,2,3,4]
@@ -143,19 +146,17 @@ for sim_number =1:simulations
                     
     end
     
-    
-    
     %at this point have selected all actual frequency values
-    frequency_indicies = index_of_frequency
+    frequency_indicies = index_of_frequency;
     %complicated as a by product of previous code
     %the fft take the max index as 0hz reference
     frequencies = (length(SIGS) - frequency_indicies +1)*(f_samp/n) + f_lo;
     
     %% FINDING FALSE ALARMS:
     
-    % -- removed due to time constraints --
-    
     true_indicies = index_of_frequency;
+    
+    % -- removed due to time constraints --
  
 %     %known issue with roll off causing multiple detection for a single peak
 %     %returns indicies of actual signals
@@ -168,23 +169,22 @@ for sim_number =1:simulations
     %% CALCULATING ELEMENT PHASES
     
     %selecting row of phase values corresponsing to set of antenna elements
-   
-    single_elements_phases = element_phases(:,1).';
+    
+    original_freq_phase_index =  find(orig_freq_indicies == 6002)
+    single_elements_phases = element_phases(:,original_freq_phase_index ).';
 
     %calculating differential wrt to first element - normalised
     diff_phases = (single_elements_phases - single_elements_phases(1));
 
     %% CALCULATING RECIEVER DETERMINED AOA
     
-    foi = frequencies(1)
+    foi = f_rf;
     
     %max frequency is defined by the demodulation process
     calculated_AOA = aoa(foi,pos_elements, diff_phases);
    
 
     %% CALCULATING ERROR
-    true_AOA 
-    calculated_AOA
     
     error = true_AOA - calculated_AOA;
 
@@ -198,8 +198,8 @@ for sim_number =1:simulations
 
 end
 
-%normalised -> rad -> deg
-data(2,:) =  (data(2,:)*2*pi)* 180/(2*pi);
+%normalised -> deg
+data(2,:) =  (data(2,:))*180;
 
 
 RMSE = sqrt(mean((data(2,:)).^2));
