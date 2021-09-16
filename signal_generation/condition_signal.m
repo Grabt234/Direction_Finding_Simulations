@@ -26,7 +26,7 @@ function signals = condition_signal(sig, array_positions, ...
     sigs = sigs.*exp(1i*2*pi*differential_phases.');
     
     %adding noise to the signal
-    signals = awgn(sigs, snr, "measured");
+    signals = awgn(sigs, snr, 'measured');
 
 end
 

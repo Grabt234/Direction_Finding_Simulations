@@ -23,8 +23,8 @@ function [element_phases, element_cmplx_voltages, frequency_indicies] = ...
     %finding the complex value of where signals present
     element_cmplx_voltages = SIGS(:,frequency_indicies);
    
-    %computing the phase of these signals - NORMALISED
-    element_phases = angle(element_cmplx_voltages)/(2*pi);
+    %computing the phase of these signals
+    element_phases = angle(element_cmplx_voltages);
 
 end
 

@@ -20,11 +20,11 @@ function fine_diff_phases = compute_ambiguities(N, phase_diff)
     for i = 1:numel(range)
         
         %calculating ambiguities from normalised phase shift
-        fine_diff_phases(1,i) =  phase_diff + range(i);
+        fine_diff_phases(1,i) =  phase_diff/(2*pi) + range(i);
         
     end
     
-
+     fine_diff_phases =  fine_diff_phases*2*pi;
     
 end
 

@@ -1,12 +1,14 @@
 %% SIMULATION PARAMTERS
 
-aoa_deg = -30;
-true_AOA = (aoa_deg)*(pi/180);
+aoa_azim = -30;
+aoa_elev = 30;
+%to radian
+true_AOA = (aoa_azim)*(pi/180);
 
 %linear array spacing
 pos_elements = [0 0.0083 0.0125 0.025]; %meters
 
-simulations = 100;
+simulations = 3999;
 
 %storing snr, error
 data = zeros(2,simulations);
@@ -15,26 +17,28 @@ false_alarm_count = 0;
 
 
 %% MONTE-CARLO ! :) WOOHOO!
-
+snr = 1;
 for sim_number =1:simulations
 
     %snr = 20*rand(1);
 
     %% GENERATING WAVEFORMS
 
-    snr = 20*rand(1);
+    if mod(sim_number,200) == 0
+        snr = snr + 1;
+    end
 
     %signal parameters
     n = 16000; %constant for now
     f_samp = 4e9; %constant
     f_sig = 0.5e9; %constant
-    f_lo = 15.5e9;
+    f_lo = 17.5e9;
     f_rf = f_sig+f_lo;
     duty = 0.1; %1 percent
     threshold_factor = 5;
     
     %signal = cw_gen(n,f_samp,f_sig);
-    signal = pulse_gen(n,duty).*cos((1:1:n)*2*pi*f_sig*(1/f_samp));
+    signal = pulse_gen(n,duty).*sin((1:1:n)*2*pi*f_sig*(1/f_samp));
     %signal = chirp_gen(n,f_samp,500e6,250e6, 0.00001);
  
     %used to determine a false alarm 
@@ -95,7 +99,8 @@ for sim_number =1:simulations
     %a lovely plot of a one sided frequency domain
     
     %% FINDING WHERE SIGNAL IS PRESENT
-
+    
+    %element phases are normalised 
     [element_phases, element_cmplx_voltages, frequency_indicies] = find_sigs(SIGS,threshold_factor);
     
     %created to keep track of original index-frequency relationship
@@ -178,7 +183,7 @@ for sim_number =1:simulations
 
     %% CALCULATING RECIEVER DETERMINED AOA
     
-    foi = f_rf;
+    foi = 18e9;
     
     %max frequency is defined by the demodulation process
     calculated_AOA = aoa(foi,pos_elements, diff_phases);
@@ -186,11 +191,13 @@ for sim_number =1:simulations
 
     %% CALCULATING ERROR
     
+    %rad
     error = true_AOA - calculated_AOA;
 
     %% STORING STATE INFORMATION
-
+    
     data(1,sim_number) = snr;
+    %in radians
     data(2,sim_number) = error;
     data(3,sim_number) = calculated_AOA;
     data(4,sim_number) = true_AOA;
@@ -198,11 +205,11 @@ for sim_number =1:simulations
 
 end
 
-%normalised -> deg
-data(2,:) =  (data(2,:))*180;
+%rad
+data(2,:) =  (data(2,:))*180/pi;
 
 
-RMSE = sqrt(mean((data(2,:)).^2));
+RMSE = sqrt(mean((data(2,:)).^2))
 
 
 %plotting results
@@ -210,5 +217,3 @@ scatter(data(1,:),data(2,:))
 xlabel("SNR(dB)")
 ylabel("Error (deg)")
 
-% 
-% 
