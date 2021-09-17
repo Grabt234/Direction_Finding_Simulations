@@ -23,10 +23,7 @@ function signals = condition_signal(sig, array_positions, ...
     
     %simulating phase difference at each recieving element
     %note: differential phases normalised to pi
-    sigs = sigs.*exp(1i*2*pi*differential_phases.');
-    
-    %adding noise to the signal
-    signals = awgn(sigs, snr, 'measured');
+    signals = sigs.*exp(1i*2*pi*differential_phases.');
 
 end
 
