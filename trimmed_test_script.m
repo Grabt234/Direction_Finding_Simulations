@@ -1,8 +1,11 @@
 %% SIMULATION PARAMTERS
 
-aoa_azim = 30;
-aoa_elev = -30;
+aoa_azim_0 = 30;
+aoa_elev_0 = -30;
 %to radian
+
+true_aoa_azim_0 =  aoa_azim_0*(pi/180);
+true_aoa_elev_0 = aoa_elev_0*(pi/180);
 
 %%
 
@@ -18,11 +21,13 @@ true_AOA_y_1 = (aoa_elev_1)*(pi/180);
 true_AOA_x_2 = (aoa_azim_2)*(pi/180);
 true_AOA_y_2 = (aoa_elev_2)*(pi/180);
 
+
+%% SELECT TRUE AOA
+
+true_AOA_x = true_AOA_x_1;
+true_AOA_y = true_AOA_y_1;
+
 %%
-
-true_AOA_x = (aoa_azim)*(pi/180);
-true_AOA_y = (aoa_elev)*(pi/180);
-
 %linear array spacing
 pos_elements_x = [0 0.0083 0.0125 0.025]; %meters
 pos_elements_y = [0 0.0083 0.0125 0.025]; %meters
@@ -46,7 +51,7 @@ for sim_number =1:simulations
     if mod(sim_number,check) == 0
         snr = snr + 1;
     end
-    %% GENERATING WAVEFORMS
+    %% GENERATING  MULTISIGNAL WAVEFORMS
 
     
 
@@ -83,7 +88,7 @@ for sim_number =1:simulations
     
     duty = 0.1;
     
-    f_lo = 6.5e9;
+    f_lo = 6e9;
     
     threshold_factor = 2;
   
@@ -94,22 +99,24 @@ for sim_number =1:simulations
     f_rf_2 = f2+f_lo;
     f_rf = f_rf_1;
     
-    signal_1 = pulse_gen(n,duty);
-    signal_2 = pulse_gen(n,duty);
-
-    %shifting to desired frequency
-    signal_1 = signal_1.*sin(2*pi*f1*(1/f_samp)*(1:1:n));
-    signal_2 = signal_2.*sin(2*pi*f2*(1/f_samp)*(1:1:n));
+%     signal_1 = pulse_gen(n,duty);
+%     signal_2 = pulse_gen(n,duty);
+% 
+%     %shifting to desired frequency
+%     signal_1 = signal_1.*sin(2*pi*f1*(1/f_samp)*(1:1:n));
+%     signal_2 = signal_2.*sin(2*pi*f2*(1/f_samp)*(1:1:n));
     
+    signal_1 = cw_gen(n,f_samp,f1);
+    signal_2 = cw_gen(n,f_samp,f2);
     I_known_1 = find_true_index(signal_1);
     I_known_2 = find_true_index(signal_2);
     I_known = [I_known_1 I_known_2];
     
-    signals_x_1 = condition_signal(signal_1, pos_elements_x, f_rf_1, true_AOA_x_1, snr); 
-    signals_y_1 = condition_signal(signal_1, pos_elements_y, f_rf_1, true_AOA_y_1, snr);
+    signals_x_1 = condition_signal(signal_1, pos_elements_x, f_rf_1, true_AOA_x_1); 
+    signals_y_1 = condition_signal(signal_1, pos_elements_y, f_rf_1, true_AOA_y_1);
     
-    signals_x_2 = condition_signal(signal_2, pos_elements_x, f_rf_2, true_AOA_x_2, snr); 
-    signals_y_2 = condition_signal(signal_2, pos_elements_y, f_rf_2, true_AOA_y_2, snr);
+    signals_x_2 = condition_signal(signal_2, pos_elements_x, f_rf_2, true_AOA_x_2); 
+    signals_y_2 = condition_signal(signal_2, pos_elements_y, f_rf_2, true_AOA_y_2);
     
     signals_x_3 = signals_x_1 + signals_x_2;
     signals_y_3 = signals_y_1 + signals_y_2;
@@ -217,8 +224,8 @@ for s = 1:(snrs-1)
 end
 %%
 
-sgtitle(["MONTE CARLO SIMULATION RESULTS FOR A 18GHZ LFM CHIRP SHOWING ERROR METRICS IN";...
-        " AZIMUTH AND ELEVATION AS A FUNCTION OF SNR (250 SIMULATIONS PER SNR)"])
+sgtitle(["MONTE CARLO SIMULATION RESULTS FOR A 6.5GHZ CONTINUOUS WAVE IN THE PRESENT OF A SECOND 7GHZ SIGNAL SHOWING ";...
+        "ERROR METRICS IN AZIMUTH AND ELEVATION AS A FUNCTION OF SNR (250 SIMULATIONS PER SNR)"])
 
 %plotting results
 subplot(2,2,1)
@@ -248,23 +255,13 @@ title("SCATTER PLOT OF RMSE ERROR IN ELEVATION AS A FUNCTION OF SNR")
 xlabel("SNR(dB)")
 ylabel("RMSE Error")
 
+%%
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+figure
+plot((1:1:length(SIGS_X))*(f_samp/n)+f_lo,fliplr(abs(SIGS_X)))
+title("FFT OF 2 RECEIVED PULSES WITHIN THE SAME SAMPLING PERIOD (6.5 AND 7 GHZ)")
+xlabel("Frequency (Hz)")
+ylabel("Amplitude")
+xlim([6e9 8e9])
 
 

@@ -1,5 +1,5 @@
 function signals = condition_signal(sig, array_positions, ...
-                                        frequency, true_aoa, snr)
+                                        frequency, true_aoa)
     
     %---------------------------------------------------------------------
     %condition_signal: take an ideal signal, simulates recieving it at each
